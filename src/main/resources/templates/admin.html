@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Person</title>
+</head>
+<body>
+
+<table border="1">
+    <tr>
+        <th>No</th>
+        <th>Имя</th>
+        <th>Возраст</th>
+        <th>email</th>
+        <th>Пароль</th>
+        <th>Роль</th>
+    </tr>
+    <tr>
+        <td th:text="${person.getId()}">value</td>
+        <td th:text="${person.getName()}">value</td>
+        <td th:text="${person.getAge()}">value</td>
+        <td th:text="${person.getEmail()}">value</td>
+        <td th:text="${person.getPassword()}">value</td>
+        <td>
+            <div  th:each="role : ${person.getUserRoles()}">
+                <span th:if="(${role.getRole()} == 'ROLE_USER')" th:text="Пользователь"/>
+                <span th:if="(${role.getRole()} == 'ROLE_ADMIN')" th:text="Администратор"/>
+            </div>
+        </td>
+    </tr>
+</table>
+<br/>
+<hr/>
+<a th:href="@{/users/edit(id=${person.id})}">
+    <button>Изменить пользователя</button>
+</a>
+<br/>
+<hr/>
+<form th:method="DELETE" th:action="@{/users/delete(id=${person.id})}">
+    <input type="submit" value="Удалить">
+</form>
+<br/>
+<hr/>
+<form th:method="GET" action="/logout">
+    <input type="submit" value="Выйти">
+</form>
+
+</body>
+</html>
