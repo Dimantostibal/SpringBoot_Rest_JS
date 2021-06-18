@@ -16,6 +16,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     public Role getRoleByName(String role) {
-        return roleDao.getRoleByName(role);
+        return roleDao.getRoleByRole(role);
     }
 }

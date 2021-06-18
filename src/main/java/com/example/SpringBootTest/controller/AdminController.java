@@ -66,7 +66,7 @@ public class AdminController {
         return "update";
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}")
     public String update(@ModelAttribute("updateUser") User user,
                          @RequestParam(value = "roleUser", required = false) String roleUser,
                          @RequestParam(value = "roleAdmin", required = false) String roleAdmin) {
@@ -82,7 +82,7 @@ public class AdminController {
         return "redirect:/users";
     }
 
-    @DeleteMapping("delete")
+    @PostMapping("delete")
     public String delete(@RequestParam("id")Long id) {
         userService.delete(id);
         return "redirect:/users";

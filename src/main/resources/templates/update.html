@@ -19,13 +19,16 @@
     <input type="text" th:field="*{email}" id="email"/>
   </p>
   <p>
-    <label for="email">Введите пароль:</label>
+    <label for="password">Введите пароль:</label>
     <input type="text" th:field="*{password}" id="password"/>
   </p>
   <p>
     <label>
-      <input type="checkbox" name="roleAdmin" th:value="ROLE_ADMIN" th:text="Администратор"/></label>
-    <input type="checkbox" name="roleUser" th:value="ROLE_USER" th:text="Пользователь"/></label>
+      <input type="checkbox" name="roleAdmin" th:value="ROLE_ADMIN" th:text="Администратор"/>
+    </label>
+    <label>
+      <input type="checkbox" name="roleUser" th:value="ROLE_USER" th:text="Пользователь"/>
+    </label>
   </p>
   <br/>
   <hr/>
