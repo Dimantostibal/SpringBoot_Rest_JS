@@ -40,11 +40,7 @@ public class UserServiceImpl implements UserService {
     public void add(User user, String[] roles) {
         Set<Role> roleSet = new HashSet<>();
         for (String role : roles) {
-            if (role.contains("ROLE_USER")) {
-                roleSet.add(getRoleById(1L));
-            } else {
-                roleSet.add(getRoleById(2L));
-            }
+            roleSet.add(roleDao.getRoleByRole(role));
         }
         user.setUserRoles(roleSet);
         userDao.save(user);
@@ -54,11 +50,7 @@ public class UserServiceImpl implements UserService {
     public void update(User user, String[] roles) {
         Set<Role> roleSet = new HashSet<>();
         for (String role : roles) {
-            if (role.contains("ROLE_USER")) {
-                roleSet.add(getRoleById(1L));
-            } else {
-                roleSet.add(getRoleById(2L));
-            }
+            roleSet.add(roleDao.getRoleByRole(role));
         }
         user.setUserRoles(roleSet);
         userDao.saveAndFlush(user);
