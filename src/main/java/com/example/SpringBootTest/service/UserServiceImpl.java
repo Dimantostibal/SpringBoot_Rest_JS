@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -59,11 +58,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
         userDao.deleteById(id);
-    }
-
-    @Override
-    public Role getRoleById(Long id) {
-        Optional<Role> optionalRole = roleDao.findById(id);
-        return optionalRole.get();
     }
 }
