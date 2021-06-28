@@ -1,28 +1,22 @@
 package com.example.SpringBootTest.controller;
 
-import com.example.SpringBootTest.model.Role;
 import com.example.SpringBootTest.model.User;
-import com.example.SpringBootTest.service.RoleServiceImpl;
 import com.example.SpringBootTest.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/users")
 public class AdminController {
     private final UserServiceImpl userService;
-    private final RoleServiceImpl roleService;
 
     @Autowired
-    public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
+    public AdminController(UserServiceImpl userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @GetMapping()
@@ -47,16 +41,9 @@ public class AdminController {
     public String addUser(@ModelAttribute("newUser") User user,
                           @RequestParam(value = "roleUser", required = false) String roleUser,
                           @RequestParam(value = "roleAdmin", required = false) String roleAdmin) {
-        Set<Role> roleSet = new HashSet<>();
-        if (roleAdmin != null) {
-            roleSet.add(roleService.getRoleByName("ROLE_ADMIN"));
-            user.setUserRoles(roleSet);
-            userService.add(user);
-        } else if (roleUser != null){
-            roleSet.add(roleService.getRoleByName("ROLE_USER"));
-            user.setUserRoles(roleSet);
-            userService.add(user);
-        }
+        String[] roles = new String[] {roleUser, roleAdmin};
+        roles = Arrays.stream(roles).filter(Objects::nonNull).toArray(String[]::new);
+        userService.add(user, roles);
         return "redirect:/users";
     }
 
@@ -70,15 +57,9 @@ public class AdminController {
     public String update(@ModelAttribute("updateUser") User user,
                          @RequestParam(value = "roleUser", required = false) String roleUser,
                          @RequestParam(value = "roleAdmin", required = false) String roleAdmin) {
-        Set<Role> roleSet = new HashSet<>();
-        if (roleAdmin != null) {
-            roleSet.add(roleService.getRoleByName("ROLE_ADMIN"));
-            user.setUserRoles(roleSet);
-        } else if (roleUser != null){
-            roleSet.add(roleService.getRoleByName("ROLE_USER"));
-            user.setUserRoles(roleSet);
-        }
-        userService.update(user);
+        String[] roles = new String[] {roleUser, roleAdmin};
+        roles = Arrays.stream(roles).filter(Objects::nonNull).toArray(String[]::new);
+        userService.update(user, roles);
         return "redirect:/users";
     }
 
