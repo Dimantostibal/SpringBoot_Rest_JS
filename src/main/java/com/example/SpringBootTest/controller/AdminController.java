@@ -7,10 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.*;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/admin")
 public class AdminController {
     private final UserServiceImpl userService;
 
@@ -20,52 +21,50 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String index(ModelMap model){
+    public String index(ModelMap modelMap, Principal principal){
         List<User> list = userService.getAllUsers();
-        model.addAttribute("allUsers", list);
-        return "/users";
+        modelMap.addAttribute("allUsers", list);
+        modelMap.addAttribute("user", userService.loadUserByUsername(principal.getName()));
+        modelMap.addAttribute("newUser", new User());
+        return "admin";
     }
 
-    @GetMapping("admin")
-    public String show(@RequestParam("id") Long id, ModelMap model) {
-        model.addAttribute("person", userService.getUser(id));
-        return "/admin";
-    }
+//    @GetMapping("admin")
+//    public String show(@RequestParam("id") Long id, ModelMap model) {
+//        model.addAttribute("person", userService.getUser(id));
+//        return "/admin";
+//    }
 
-    @GetMapping("/create")
-    public String createUser(@ModelAttribute("newUser") User user) {
-        return "create";
-    }
+//    @GetMapping("/create")
+//    public String createUser(@ModelAttribute("newUser") User user) {
+//        return "create";
+//    }
 
-    @PostMapping()
+    @PostMapping("create")
     public String addUser(@ModelAttribute("newUser") User user,
-                          @RequestParam(value = "roleUser", required = false) String roleUser,
-                          @RequestParam(value = "roleAdmin", required = false) String roleAdmin) {
-        String[] roles = new String[] {roleUser, roleAdmin};
+                          @RequestParam(value = "roleUser", required = false) String[] roles){
         roles = Arrays.stream(roles).filter(Objects::nonNull).toArray(String[]::new);
         userService.add(user, roles);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
-    @GetMapping("edit")
-    public String edit(@RequestParam("id") Long id, ModelMap model){
-        model.addAttribute("updateUser", userService.getUser(id));
-        return "update";
-    }
+//    @GetMapping("edit")
+//    public String edit(@RequestParam("id") Long id, ModelMap model){
+//        model.addAttribute("updateUser", userService.getUser(id));
+//        return "update";
+//    }
 
-    @PostMapping("/{id}")
-    public String update(@ModelAttribute("updateUser") User user,
-                         @RequestParam(value = "roleUser", required = false) String roleUser,
-                         @RequestParam(value = "roleAdmin", required = false) String roleAdmin) {
-        String[] roles = new String[] {roleUser, roleAdmin};
+    @PostMapping("update")
+    public String update(@ModelAttribute("newUser") User user,
+                         @RequestParam(value = "roleUser", required = false) String[] roles) {
         roles = Arrays.stream(roles).filter(Objects::nonNull).toArray(String[]::new);
         userService.update(user, roles);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
     @PostMapping("delete")
     public String delete(@RequestParam("id")Long id) {
         userService.delete(id);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 }

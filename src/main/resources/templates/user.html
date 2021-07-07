@@ -1,20 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title>User</title>
 </head>
 <body>
-<b> WELCOME </b>
-
-<div sec:authorize="isAuthenticated()">
-    <span sec:authentication="name"></span>
+<header>
+    <th:block th:include="static/header.html"></th:block>
+</header>
+<div class="d-flex flex-row vh-100 p-0">
+    <div class="col-2 mt-3">
+        <nav class="nav flex-column nav-pills">
+            <a class="nav-link active" href="/user">User</a>
+        </nav>
+    </div>
+    <div class="col-10 p-3 bg-light">
+        <h2>User information page</h2>
+        <div class="card">
+            <h3 class="card-header">About user</h3>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${user.getId()}"></td>
+                        <td th:text="${user.getName()}"></td>
+                        <td th:text="${user.getAge()}"></td>
+                        <td th:text="${user.getEmail()}"></td>
+                        <td th:utext="${#strings.arrayJoin(user.getAuthorities(), ' ')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-<br/>
-<hr/>
-<form th:method="GET" action="/logout">
-    <input type="submit" value="Выйти">
-</form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.example.SpringBootTest.service;
 
 import com.example.SpringBootTest.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface UserService {
     void update(User user, String[] roles);
 
     void delete(Long id);
+
+    UserDetails loadUserByUsername(String name);
 }

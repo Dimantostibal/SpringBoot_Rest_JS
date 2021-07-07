@@ -1,5 +1,6 @@
 package com.example.SpringBootTest.config;
 
+import com.example.SpringBootTest.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -8,23 +9,22 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserDetailsService userDetailsService; // сервис, с помощью которого тащим пользователя
+    private final UserServiceImpl userService; // сервис, с помощью которого тащим пользователя
     private final LoginSuccessHandler loginSuccessHandler; // класс, в котором описана логика перенаправления пользователей по ролям
 
-    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, LoginSuccessHandler loginSuccessHandler) {
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(@Qualifier("userServiceImpl") UserServiceImpl userService, LoginSuccessHandler loginSuccessHandler) {
+        this.userService = userService;
         this.loginSuccessHandler = loginSuccessHandler;
     }
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()); // конфигурация для прохождения аутентификации
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder()); // конфигурация для прохождения аутентификации
     }
 
     @Override
@@ -34,18 +34,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers("/login").anonymous()
                     .antMatchers("/user").hasAnyRole("USER", "ADMIN")
-                    .antMatchers("/users/**").hasRole("ADMIN")
+                    .antMatchers("/admin/**").hasRole("ADMIN")
                 .and()
                     .formLogin()
                     // указываем страницу с формой логина
-                    .loginPage("/login")
+//                    .loginPage("/login")
                     //указываем логику обработки при логине
                     .successHandler(loginSuccessHandler)
                     // указываем action с формы логина
-                    .loginProcessingUrl("/login")
+//                    .loginProcessingUrl("/login")
                     // Указываем параметры логина и пароля с формы логина
-                    .usernameParameter("j_username")
-                    .passwordParameter("j_password")
+//                    .usernameParameter("j_username")
+//                    .passwordParameter("j_password")
                     // даем доступ к форме логина всем
                     .permitAll()
                 .and()
@@ -53,9 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     // разрешаем делать логаут всем
                     .permitAll()
                     // указываем URL логаута
-                    .logoutUrl("/logout")
+//                    .logoutUrl("/logout")
                     // указываем URL при удачном логауте
-                    .logoutSuccessUrl("/login?logout");
+                    .logoutSuccessUrl("/login");
         // Необходимо для шифрования паролей
         // В данном примере не используется, отключен
     }

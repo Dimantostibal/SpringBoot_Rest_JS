@@ -16,6 +16,15 @@ public class Role implements GrantedAuthority{
     @Column(name = "role")
     private String role;
 
+    @Override
+    public String toString() {
+        if (role.equals("ROLE_USER")){
+            return "USER";
+        } else {
+            return "ADMIN USER";
+        }
+    }
+
     @ManyToMany(mappedBy = "userRoles")
     private Set<User> users;
 
