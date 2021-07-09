@@ -3,7 +3,6 @@ package com.example.SpringBootTest.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -18,15 +17,8 @@ public class Role implements GrantedAuthority{
 
     @Override
     public String toString() {
-        if (role.equals("ROLE_USER")){
-            return "USER";
-        } else {
-            return "ADMIN USER";
-        }
+        return role;
     }
-
-    @ManyToMany(mappedBy = "userRoles")
-    private Set<User> users;
 
     public Role() {}
 
@@ -49,14 +41,6 @@ public class Role implements GrantedAuthority{
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 
     @Override
