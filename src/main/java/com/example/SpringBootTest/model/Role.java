@@ -15,11 +15,6 @@ public class Role implements GrantedAuthority{
     @Column(name = "role")
     private String role;
 
-    @Override
-    public String toString() {
-        return role;
-    }
-
     public Role() {}
 
     public Role(Long id, String role) {
@@ -45,6 +40,11 @@ public class Role implements GrantedAuthority{
 
     @Override
     public String getAuthority() {
+        return role;
+    }
+
+    @Override
+    public String toString() {
         return role;
     }
 }

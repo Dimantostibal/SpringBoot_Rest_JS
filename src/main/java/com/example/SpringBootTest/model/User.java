@@ -112,7 +112,6 @@ public class User implements UserDetails {
         return getUserRoles();
     }
 
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
