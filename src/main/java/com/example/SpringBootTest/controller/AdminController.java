@@ -3,19 +3,15 @@ package com.example.SpringBootTest.controller;
 import com.example.SpringBootTest.model.User;
 import com.example.SpringBootTest.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import java.net.URI;
 import java.util.*;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/users")
 public class AdminController {
     private final UserServiceImpl userService;
 
@@ -24,53 +20,53 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping()
     public ResponseEntity<List<User>> listUsers() {
         try {
             List<User> users = userService.getAllUsers();
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return ResponseEntity.ok(users);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id){
         try {
             User user = userService.getUser(id);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return ResponseEntity.ok(user);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @PostMapping("/users")
+    @PostMapping()
     public ResponseEntity<User> create(@RequestBody User user) {
         try {
             userService.add(user);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return ResponseEntity.created(URI.create("user" + user.getName())).build();
         }catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @PutMapping("/users/{id}")
-    public ResponseEntity<User> update(@RequestBody User user, @PathVariable("id") Long id){
+    @PutMapping("/{id}")
+    public ResponseEntity<User> update(@RequestBody User user){
         try {
             userService.update(user);
-            return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
         try {
             userService.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 }

@@ -266,7 +266,7 @@ function addNewUser(){
         body: JSON.stringify(user), })
         .then(response => {
             console.log(response.text());
-        })
+        }).then(() => getAllUsers())
 
 }
 

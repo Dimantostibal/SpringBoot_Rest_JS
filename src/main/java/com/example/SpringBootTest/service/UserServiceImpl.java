@@ -2,7 +2,6 @@ package com.example.SpringBootTest.service;
 
 import com.example.SpringBootTest.dao.RoleDao;
 import com.example.SpringBootTest.dao.UserDao;
-import com.example.SpringBootTest.model.Role;
 import com.example.SpringBootTest.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,9 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
