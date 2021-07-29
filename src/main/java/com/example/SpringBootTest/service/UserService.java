@@ -10,9 +10,9 @@ public interface UserService {
 
     User getUser(Long id);
 
-    void add(User user, String[] roles);
+    void add(User user);
 
-    void update(User user, String[] roles);
+    void update(User user);
 
     void delete(Long id);
 

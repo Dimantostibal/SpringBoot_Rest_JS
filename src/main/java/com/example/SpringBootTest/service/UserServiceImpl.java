@@ -39,23 +39,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void add(User user, String[] roles) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String role : roles) {
-            roleSet.add(roleDao.getRoleByRole(role));
-        }
-        user.setUserRoles(roleSet);
+    public void add(User user) {
         userDao.save(user);
     }
 
     @Override
-    public void update(User user, String[] roles) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String role : roles) {
-            roleSet.add(roleDao.getRoleByRole(role));
-        }
-        user.setUserRoles(roleSet);
-        userDao.saveAndFlush(user);
+    public void update(User user) {
+        userDao.save(user);
     }
 
     @Override

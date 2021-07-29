@@ -10,19 +10,16 @@ import java.security.Principal;
 
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping()
 public class UserController {
 
-    private final UserServiceImpl userService;
-
-    @Autowired
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
+    @GetMapping("admin")
+    public String indexAdmin(){
+        return "admin";
     }
 
-    @GetMapping()
-    public String showByUser(ModelMap modelMap, Principal principal){
-        modelMap.addAttribute("user", userService.loadUserByUsername(principal.getName()));
+    @GetMapping("user")
+    public String indexUser(){
         return "user";
     }
 
