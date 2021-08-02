@@ -44,7 +44,7 @@ public class AdminController {
     public ResponseEntity<User> create(@RequestBody User user) {
         try {
             userService.add(user);
-            return ResponseEntity.created(URI.create("user" + user.getName())).build();
+            return ResponseEntity.ok(user);
         }catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
@@ -54,7 +54,7 @@ public class AdminController {
     public ResponseEntity<User> update(@RequestBody User user){
         try {
             userService.update(user);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
@@ -64,7 +64,7 @@ public class AdminController {
     public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
         try {
             userService.delete(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
